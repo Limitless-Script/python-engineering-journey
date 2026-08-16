@@ -1,7 +1,7 @@
 [project]
 name = "python-engineering-journey"
 version = "0.1.0"
-description = "Add your description here"
+description = "A structured Python learning path from foundations to advanced software engineering."
 readme = "README.md"
 authors = [
     { name = "Do Anh Duy", email = "doanhduyxavie@gmail.com" }
@@ -17,9 +17,6 @@ dev = [
     "ruff>=0.12,<1",
 ]
 
-[project.scripts]
-python-engineering-journey = "python_engineering_journey:main"
-
 [build-system]
 requires = ["uv_build>=0.12.5,<0.13.0"]
 build-backend = "uv_build"
@@ -34,10 +31,16 @@ addopts = [
     "--strict-config",
     "--strict-markers",
 ]
+markers = [
+    "exercise: test depends on an intentionally-unfinished exercise stub; deselected in CI with -m 'not exercise'.",
+]
 
 [tool.ruff]
 line-length = 100
 target-version = "py313"
+# Exercise stubs are intentionally incomplete (unused imports, missing bodies);
+# they are the learner's homework, so keep them out of automated linting.
+extend-exclude = ["**/exercises/**"]
 
 [tool.ruff.lint]
 select = [
@@ -59,3 +62,16 @@ python_version = "3.13"
 strict = true
 warn_unreachable = true
 show_error_codes = true
+# Exercise stubs return placeholder values and won't type-check until completed.
+exclude = ['/exercises/']
+
+[tool.coverage.run]
+branch = true
+source = ["src"]
+omit = [
+    "**/exercises/**",
+    "**/examples/**",
+]
+
+[tool.coverage.report]
+show_missing = true

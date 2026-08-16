@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Cancel superseded runs on the same branch/PR to save CI minutes.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: Lint, type-check & test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Install Python
+        # uv reads .python-version and downloads 3.13 if it is not present.
+        run: uv python install
+
+      - name: Install dependencies
+        # --frozen fails the build if uv.lock is out of sync with pyproject.toml,
+        # so the lockfile is validated on every run.
+        run: uv sync --all-groups --frozen
+
+      - name: Ruff lint
+        run: uv run ruff check .
+
+      - name: Ruff format check
+        run: uv run ruff format --check .
+
+      - name: Mypy type check
+        run: uv run mypy src tests
+
+      - name: Pytest
+        # Exercise stubs are intentionally unfinished; their tests are deselected.
+        run: uv run pytest -m "not exercise" --cov --cov-report=term-missing

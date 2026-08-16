@@ -14,6 +14,7 @@ def describe(name: str, obj: object) -> None:
     print(f"  id    = {id(obj)}")
     print()
 
+
 number = 42
 message = "Hello"
 items = [1, 2, 3]

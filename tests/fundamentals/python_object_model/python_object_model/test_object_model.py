@@ -60,7 +60,9 @@ def test_class_and_instance_are_different_objects() -> None:
 
     user = User()
 
-    assert User is not user
+    # The class object and its instance are distinct objects. mypy statically
+    # knows their types can never overlap, hence the targeted ignore.
+    assert User is not user  # type: ignore[comparison-overlap]
 
 
 def test_instance_has_expected_type() -> None:
