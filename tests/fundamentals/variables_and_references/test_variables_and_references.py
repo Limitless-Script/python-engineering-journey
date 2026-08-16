@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import copy
 
+import pytest
+
 from python_engineering_journey.fundamentals.variables_and_references.exercises.exercise_02 import (
     mutate,
     rebind,
@@ -52,6 +54,7 @@ def test_rebinding_does_not_change_the_original_object() -> None:
     assert numbers is not alias
 
 
+@pytest.mark.exercise
 def test_mutate_changes_the_callers_list() -> None:
     numbers = [1, 2, 3]
 
@@ -60,6 +63,7 @@ def test_mutate_changes_the_callers_list() -> None:
     assert numbers == [1, 2, 3, 4]
 
 
+@pytest.mark.exercise
 def test_rebind_does_not_change_the_callers_list() -> None:
     numbers = [1, 2, 3]
 
@@ -131,6 +135,7 @@ def test_deep_copy_nested_mutation_is_independent() -> None:
     assert clone == [["Python", "Java", "C++"]]
 
 
+@pytest.mark.exercise
 def test_mutation_and_rebinding_have_different_semantics() -> None:
     numbers = [1, 2, 3]
 

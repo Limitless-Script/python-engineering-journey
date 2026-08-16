@@ -1,6 +1,5 @@
 import copy
 
-
 original = [
     ["Python", "Java"],
     ["Go", "Rust"],
